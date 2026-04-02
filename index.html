@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>To-Do List</title>
+    <title>To-Do App</title>
 
     <style>
-        /* Background animation */
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Arial, sans-serif;
             background: linear-gradient(270deg, #00ff9d, #00c3ff, #8e44ad);
             background-size: 600% 600%;
-            animation: gradientBG 10s ease infinite;
+            animation: bgMove 10s ease infinite;
 
             display: flex;
             justify-content: center;
@@ -18,52 +17,46 @@
             margin: 0;
         }
 
-        /* Gradient movement */
-        @keyframes gradientBG {
+        @keyframes bgMove {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* Main container */
         .container {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px); /* glass effect */
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
             padding: 25px;
-            width: 320px;
+            width: 350px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             text-align: center;
-
             animation: fadeIn 1s ease;
         }
 
-        /* Fade animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         h2 {
-            margin-bottom: 15px;
             color: white;
+            margin-bottom: 10px;
         }
 
-        /* Input styling */
+        .input-area {
+            display: flex;
+            gap: 5px;
+        }
+
         input {
-            width: 65%;
+            flex: 1;
             padding: 10px;
-            border: none;
             border-radius: 8px;
+            border: none;
             outline: none;
-            transition: 0.3s;
         }
 
-        input:focus {
-            transform: scale(1.05);
-        }
-
-        /* Button styling */
         button {
             padding: 10px;
             border: none;
@@ -75,41 +68,49 @@
         }
 
         button:hover {
-            background: #008cff;
             transform: scale(1.1);
+            background: #008cff;
         }
 
-        /* List */
-        ol {
+        ul {
             margin-top: 20px;
-            padding-left: 20px;
+            padding: 0;
+            list-style: none;
         }
 
-        /* List items */
         li {
-            margin-bottom: 10px;
             background: rgba(255,255,255,0.8);
+            margin-bottom: 10px;
             padding: 10px;
             border-radius: 8px;
+
             display: flex;
             justify-content: space-between;
             align-items: center;
 
+            animation: slideIn 0.3s ease;
             transition: 0.3s;
         }
 
-        /* Hover effect on list */
-        li:hover {
-            transform: translateX(5px);
-            background: white;
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        /* Delete button */
-        li button {
+        li:hover {
+            transform: scale(1.02);
+        }
+
+        .done {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .delete {
             background: #ff4d4d;
         }
 
-        li button:hover {
+        .delete:hover {
             background: #cc0000;
         }
 
@@ -118,17 +119,77 @@
 
 <body>
 
-    <div class="container">
-        <h2>To-Do List</h2>
+<div class="container">
+    <h2>✨ My To-Do List</h2>
 
-        <input type="text" placeholder="Enter item">
-        <button>Add</button>
-
-        <ol>
-            <li>Buy Grocery <button>Delete</button></li>
-            <li>Laundry <button>Delete</button></li>
-        </ol>
+    <div class="input-area">
+        <input type="text" id="taskInput" placeholder="Enter task...">
+        <button onclick="addTask()">Add</button>
     </div>
+
+    <ul id="taskList"></ul>
+</div>
+
+<script>
+    // Load saved tasks
+    window.onload = function() {
+        loadTasks();
+    };
+
+    function addTask() {
+        const input = document.getElementById("taskInput");
+        const text = input.value.trim();
+
+        if (text === "") return;
+
+        createTask(text);
+        saveTask(text);
+
+        input.value = "";
+    }
+
+    function createTask(text) {
+        const li = document.createElement("li");
+
+        const span = document.createElement("span");
+        span.textContent = text;
+
+        span.onclick = function() {
+            span.classList.toggle("done");
+        };
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "❌";
+        delBtn.className = "delete";
+
+        delBtn.onclick = function() {
+            li.remove();
+            removeTask(text);
+        };
+
+        li.appendChild(span);
+        li.appendChild(delBtn);
+
+        document.getElementById("taskList").appendChild(li);
+    }
+
+    function saveTask(task) {
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        tasks.push(task);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    function loadTasks() {
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        tasks.forEach(task => createTask(task));
+    }
+
+    function removeTask(task) {
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        tasks = tasks.filter(t => t !== task);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+</script>
 
 </body>
 </html>
