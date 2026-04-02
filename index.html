@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+
+    <style>
+        /* Background animation */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(270deg, #00ff9d, #00c3ff, #8e44ad);
+            background-size: 600% 600%;
+            animation: gradientBG 10s ease infinite;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Gradient movement */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Main container */
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px); /* glass effect */
+            padding: 25px;
+            width: 320px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+
+            animation: fadeIn 1s ease;
+        }
+
+        /* Fade animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        /* Input styling */
+        input {
+            width: 65%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            transform: scale(1.05);
+        }
+
+        /* Button styling */
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #00c3ff;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #008cff;
+            transform: scale(1.1);
+        }
+
+        /* List */
+        ol {
+            margin-top: 20px;
+            padding-left: 20px;
+        }
+
+        /* List items */
+        li {
+            margin-bottom: 10px;
+            background: rgba(255,255,255,0.8);
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            transition: 0.3s;
+        }
+
+        /* Hover effect on list */
+        li:hover {
+            transform: translateX(5px);
+            background: white;
+        }
+
+        /* Delete button */
+        li button {
+            background: #ff4d4d;
+        }
+
+        li button:hover {
+            background: #cc0000;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>To-Do List</h2>
+
+        <input type="text" placeholder="Enter item">
+        <button>Add</button>
+
+        <ol>
+            <li>Buy Grocery <button>Delete</button></li>
+            <li>Laundry <button>Delete</button></li>
+        </ol>
+    </div>
+
+</body>
+</html>
